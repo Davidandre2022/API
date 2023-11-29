@@ -260,38 +260,3 @@ async def user(id: str):
         # Manejar el caso en el que el ID no sea un número
         raise HTTPException(status_code=400, detail=f"El id {id} no es un número válido")
     
-#Recomendacioón usuarios
-@app.get("/recomendacion_usuario/{user_id: str}")
-async def user(user_id: str):
-    """
-    Obtiene recomendaciones de juegos basándose en usuarios similares.
-
-    Parámetros:
-    - user_id: El usuario para el cual se desea obtener las recomendaciones.
-
-    Returns:
-    - Lista de recomendaciones para el usuario especificado.
-
-    Ejemplos de user_id : 16395 , 2greasy , 350176 , chun437
-    """
-
-    try:
-        # Leer el DataFrame de recomendaciones desde el archivo CSV
-        df_recomendaciones = pd.read_csv("Datsets/Modelo_ML/recomendacion_user_item.csv")
-        
-        # Filtrar el DataFrame para obtener solo las filas correspondientes al usuario dado
-        usuario_filtro = df_recomendaciones[df_recomendaciones['user_id'] == user_id]
-
-        # Verificar si el usuario existe en el DataFrame
-        if usuario_filtro.empty:
-            return JSONResponse(
-                status_code=404,
-                content={'error': f"No se encontró información del jugador  '{user_id}'"})
-
-        # Concatenar las listas de recomendaciones correspondientes al usuario
-        recomendaciones_usuario = usuario_filtro['recomendaciones'].sum()
-
-        return recomendaciones_usuario
-    
-    except Exception as e:
-        return f"Error: {e}"
