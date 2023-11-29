@@ -5,11 +5,6 @@ import pandas as pd
 
 app = FastAPI(title='API Steam Games')
 
-#Mensaje de bienvenida
-@app.get("/")
-async def root():
-    return {"Mensaje": "Bienvenidos a mi proyecto individual del bootcamp SoyHenry"}
-
 #PlayTimeGenre
 @app.get("/PlayTimeGenre/{genero :str}")
 async def user(genero: str):
